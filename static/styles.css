@@ -1,0 +1,725 @@
+/* General Body and Layout Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1A1C2C;
+    color: #E0E6ED;
+    line-height: 1.6;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1F2937;
+    padding: 15px 20px;
+    height: 50px;
+}
+
+header .logo {
+    font-size: 35px;
+    font-weight: bold;
+    color: #00B4D8;
+}
+
+header nav ul {
+    display: flex;
+    list-style: none;
+    transition: all 0.3s ease;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #E0E6ED;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+    color: #00B4D8;
+}
+
+/* Hamburger Icon Styling */
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+}
+
+.nav-toggle .bar {
+    height: 3px;
+    background-color: #E0E6ED;
+    width: 100%;
+}
+
+/* Active navigation on smaller screens */
+#nav-links.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #1F2937;
+    width: 100%;
+    padding: 10px;
+}
+
+/* Video Section */
+.video-section {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-container .video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(5px);
+    position: absolute;
+    z-index: 0;
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #E0E6ED;
+    z-index: 1;
+}
+
+/* Style for the overlay text */
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 10;
+}
+
+.overlay-text h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.overlay-text p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Style for the buttons container */
+.button-container {
+    display: flex;
+    gap: 20px; /* Space between buttons */
+    justify-content: center;
+    margin-top: 20px; /* Adds space between the text and buttons */
+}
+
+/* Style for the primary button */
+.btn-primary {
+    background-color: #007BFF; /* Vibrant Blue */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: #FF8F00; /* Darker Blue on hover */
+    transform: translateY(-2px); /* Adds a slight lift effect */
+}
+
+/* Style for the secondary button */
+.btn-secondary {
+    background-color: #007BFF; /* Golden Yellow */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #FF8F00; /* Darker Yellow on hover */
+    transform: translateY(-2px); /* Adds a slight lift effect */
+}
+
+
+
+.overlay-text h1 {
+    font-size: 3rem;
+    margin: 0;
+    font-weight: bold;
+    color: whitesmoke;
+}
+
+.overlay-text p {
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
+/* Prediction Section */
+.predictions-section {
+    background-color: #1F2937;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.predictions-section h2 {
+    margin-bottom: 30px;
+    color: #00B4D8;
+    font-size: 35px;
+    font-weight: bold;
+}
+.predictions-section a{
+    text-decoration: none;
+    font-weight: bold;
+}
+.prediction-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    background-color: #374151;
+    padding: 20px;
+    margin: 16px;
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+    margin-bottom: 20px;
+    margin-top: 42px;
+    font-size: 18px;
+    color: #E0E6ED;
+}
+
+.card button {
+    background-color: #00B4D8;
+    color: #1A1C2C;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 11px;
+}
+
+.card button:hover {
+    background-color: #0096C7;
+}
+
+/* Form Section */
+.prediction-form {
+    background-color: #1F2937;
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prediction-form h3{
+    display: flex;
+    justify-content: center;
+}
+
+.form-container {
+    background-color: #374151;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-container h3 {
+    margin-bottom: 20px;
+    color: #00B4D8;
+    font-size: 25px;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    color: whitesmoke;
+    font-size: 20px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container form label,
+.form-container form input,
+.form-container form select {
+    margin-bottom: 15px;
+    color: #E0E6ED;
+}
+
+.form-container input,
+.form-container select {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2D3748;
+    color: #E0E6ED;
+}
+
+.predict-button {
+    background-color: #00B4D8;
+    color: #1A1C2C;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    /* width: 150px; */
+    margin: 0 auto;
+    font-weight: bold;
+}
+
+.predict-button:hover {
+    background-color: #0096C7;
+}
+
+/* Footer */
+footer {
+    background-color: #1F2937;
+    color: #E0E6ED;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 768px) {
+    nav ul {
+        display: none;
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .prediction-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .video-container {
+        width: 100%;
+        height: 250px;
+    }
+
+    .form-container {
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-container {
+        font-size: 24px;
+        height: 200px;
+    }
+
+    header .logo {
+        font-size: 20px;
+    }
+
+    .card {
+        width: 150px;
+    }
+
+    .prediction-form {
+        padding: 30px;
+    }
+
+    .form-container {
+        padding: 10px;
+    }
+}
+
+/* Team Section */
+.team-section {
+    background-color: #1F2937;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.team-section h2 {
+    color: #00B4D8;
+    margin-bottom: 30px;
+}
+
+.team-members {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.team-member {
+    background-color: #374151;
+    padding: 20px;
+    margin: 30px;
+    width: 200px;
+    border-radius: 10px;
+    text-align: center;
+    color: #E0E6ED;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.team-member img {
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.team-member h3 {
+    font-size: 18px;
+    margin: 10px 0 5px;
+}
+
+.team-member p {
+    font-size: 14px;
+    color: #00B4D8;
+}
+
+#teamjatt{
+    font-size: 35px;
+}
+
+/* Feedback Section */
+.feedback-section {
+    background-color: #1F2937;
+    padding: 50px 20px;
+    text-align: center;
+    color: #E0E6ED;
+}
+
+.feedback-section h2 {
+    color: #00B4D8;
+    margin-bottom: 30px;
+    font-size: 35px;
+}
+
+.feedback-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #374151;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.feedback-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.feedback-form label {
+    display: block;
+    color: #E0E6ED;
+    margin-bottom: 5px;
+}
+
+.feedback-form .required {
+    color: #FF0000;
+    font-weight: bold;
+}
+
+.feedback-form .name-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.feedback-form .name-container input {
+    width: 48%; /* This ensures each input takes up about half the available width */
+}
+
+.feedback-form input[type="text"],
+.feedback-form input[type="email"],
+.feedback-form textarea {
+    width: 100%;
+    padding: 6px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2D3748;
+    color: #E0E6ED;
+    resize: none;
+}
+
+.feedback-form input[type="text"]:focus,
+.feedback-form input[type="email"]:focus,
+.feedback-form textarea:focus {
+    outline: none;
+    background-color: #3C4A5E;
+}
+
+.feedback-form .submit-button {
+    background-color: #00B4D8;
+    color: #1A1C2C;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.feedback-form .submit-button:hover {
+    background-color: #0096C7;
+}
+
+/* Style for the name fields container */
+.name-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Add space between first and last name */
+}
+
+/* Style for the individual name fields */
+.name-field {
+    flex: 1; /* Makes each input take equal space */
+}
+
+/* Style for the name input fields */
+.name-field input {
+    width: 100%; /* Takes up full width of the container */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+/* Style for the form fields */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Style for the email and feedback input */
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+    background-color: #2D3748;
+    color: #E0E6ED;
+}
+
+/* Submit button style */
+.submit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+#feedback{
+    height: 50px;
+}
+
+/* Add responsiveness for smaller screens */
+@media (max-width: 768px) {
+    .name-group {
+        flex-direction: column; /* Stacks the inputs vertically on small screens */
+    }
+    .name-field {
+        margin-bottom: 10px; /* Adds space between stacked inputs */
+    }
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #1F2937;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.predict-group
+{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+/* Specific modal styles for the chart */
+/* General modal styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Modal content styling */
+  .modal-content {
+    position: relative;
+    background-color: #1A1C2C;
+    margin: auto;
+    padding: 20px;
+    width: 80%; /* Adjust width as needed */
+    max-width: 300px; /* Set a max-width for smaller screens */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .close,
+  .close-chart {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close-chart:hover {
+    color: #000;
+  }
+  
+  * Report Card Styling */
+.report-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background-color: #2b2d42;
+    padding: 20px;
+    border-radius: 8px;
+    color: #f0f0f0;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    width: 800px;
+  }
+  
+  .report-details {
+    flex: 1;
+    font-family: Arial, sans-serif;
+    max-width: 300px;
+    justify-content: space-between;
+    display: inline-block;
+  }
+  
+  .report-details p {
+    margin: 16px 0;
+    line-height: 1.6;
+  }
+  
+  .report-details p strong {
+    color: #8ecae6;
+  }
+  
+
+  .prediction-stats{
+    display: inline-block;
+    margin-left: 255px;
+  }
+
+  .prediction-stats p strong{
+    color: #8ecae6;
+  }
+  
+
+  
+  .impact-chart-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+  }
+
+
+  
+  .impact-chart-label {
+    position: absolute;
+    font-size: 1.2em;
+    color: #8ecae6;
+    font-weight: bold;
+  }
+  
+
+  .report-section h2{
+    color: #00B4D8;
+    text-align: center;
+  }

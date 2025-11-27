@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MatchMind</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="logo">MATCH MIND</div>
+      <nav>
+        <ul id="nav-links">
+          <li><a href="http://127.0.0.1:5000">Home</a></li>
+          <li><a href="#predictions">Prediction</a></li>
+          <li><a href="#teamjatt">About Us</a></li>
+          <li><a href="#feedback-section">Feedback</a></li>
+        </ul>
+      </nav>
+      <!-- Hamburger Icon -->
+      <button class="nav-toggle" id="nav-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </button>
+    </header>
+
+    <section class="video-section">
+      <div class="video-container">
+        <video width="100%" height="auto" autoplay loop muted class="video">
+          <source
+            src="{{ url_for('static', filename='videos/video2.mp4') }}"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+        <div class="overlay-text">
+          <h1>MatchMind</h1>
+          <p>Your Ultimate Cricket Prediction Tool</p>
+          <div class="button-container">
+            <a href="#predictions"
+              ><button class="btn-primary">Start Predicting</button></a
+            >
+            <a href="#teamjatt"
+              ><button class="btn-secondary">Meet The Team</button></a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="predictions" class="predictions-section">
+      <h2>Predictions</h2>
+      <div class="prediction-cards">
+        <div class="card">
+          <h3>Player Performance Prediction</h3>
+          <button><a href="#prediction-form-0">Predict Now</a></button>
+        </div>
+        <div class="card">
+          <h3>
+            IPL Score <br />
+            Prediction
+          </h3>
+          <button><a href="#prediction-form-1">Predict Now</a></button>
+        </div>
+        <div class="card">
+          <h3>IPL Win Probability Prediction</h3>
+          <button><a href="#prediction-form-2">Predict Now</a></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="prediction-form" id="prediction-form-0">
+  <div class="form-container">
+    <h3>Player Performance Prediction</h3>
+    <form id="batsmanForm" method="POST" action="/predict_batsman">
+      <label for="batter">Batter Name:</label>
+      <input type="text" id="batter" name="batter" placeholder="e.g. Virat Kohli" required />
+
+      <label for="BowlingTeam">Select Bowling Team:</label>
+      <select id="BowlingTeam" name="BowlingTeam" required>
+        <option value="Chennai Super Kings">Chennai Super Kings</option>
+        <option value="Mumbai Indians">Mumbai Indians</option>
+        <option value="Delhi Capitals">Delhi Capitals</option>
+        <option value="Punjab Kings">Punjab Kings</option>
+        <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+        <option value="Rajasthan Royals">Rajasthan Royals</option>
+        <option value="Royal Challengers Bangalore">Royal Challengers Bangalore</option>
+        <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+      </select>
+
+      <label for="City">Select City:</label>
+      <select id="City" name="City" required>
+        <option value="Chennai">Chennai</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Delhi">Delhi</option>
+        <option value="Chandigarh">Chandigarh</option>
+        <option value="Kolkata">Kolkata</option>
+        <option value="Jaipur">Jaipur</option>
+        <option value="Bangalore">Bangalore</option>
+        <option value="Hyderabad">Hyderabad</option>
+      </select>
+
+      <label for="TossDecision">Toss Decision:</label>
+      <select id="TossDecision" name="TossDecision" required>
+        <option value="bat">Bat</option>
+        <option value="field">Field</option>
+      </select>
+
+      <button type="submit" class="predict-button">Predict Performance</button>
+    </form>
+
+    <!-- Result card -->
+    <div id="batsmanResult" style="margin-top: 20px; display: none;">
+      <div class="report-card">
+        <div class="report-details">
+          <p><strong>Batter:</strong> <span id="res-batter"></span></p>
+          <p><strong>Bowling Team:</strong> <span id="res-bowling-team"></span></p>
+          <p><strong>City:</strong> <span id="res-city"></span></p>
+          <p><strong>Toss Decision:</strong> <span id="res-toss"></span></p>
+        </div>
+        <div class="prediction-stats">
+          <p><strong>Expected Strike Rate:</strong> <span id="res-sr"></span></p>
+          <p><strong>Expected Runs:</strong> <span id="res-runs"></span></p>
+          <p><strong>Expected 4s:</strong> <span id="res-4s"></span></p>
+          <p><strong>Expected 6s:</strong> <span id="res-6s"></span></p>
+          <p><strong>Impact Score:</strong> <span id="res-impact"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <section class="prediction-form" id="prediction-form-1">
+      <div class="form-container">
+        <h3>IPL Score Predictor</h3>
+        <form id="predictionForm" method="POST" action="/predict">
+          <label for="battingTeam">Select Batting Team:</label>
+          <select id="battingTeam" name="battingTeam" required>
+            <option value="Chennai Super Kings">Chennai Super Kings</option>
+            <option value="Mumbai Indians">Mumbai Indians</option>
+            <option value="Delhi Capitals">Delhi Daredevils</option>
+            <option value="Punjab Kings">Kings XI Punjab</option>
+            <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+            <option value="Rajasthan Royals">Rajasthan Royals</option>
+            <option value="Royal Challengers Bangalore">
+              Royal Challengers Bangalore
+            </option>
+            <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+          </select>
+          <label for="bowlingTeam">Select Bowling Team:</label>
+          <select id="bowlingTeam" name="bowlingTeam" required>
+            <option value="Chennai Super Kings">Chennai Super Kings</option>
+            <option value="Mumbai Indians">Mumbai Indians</option>
+            <option value="Delhi Capitals">Delhi Daredevils</option>
+            <option value="Punjab Kings">Kings XI Punjab</option>
+            <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+            <option value="Rajasthan Royals">Rajasthan Royals</option>
+            <option value="Royal Challengers Bangalore">
+              Royal Challengers Bangalore
+            </option>
+            <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+          </select>
+          <label for="over">Current Over (e.g., 5.1):</label>
+          <input type="text" id="over" name="over" required />
+          <label for="runs">Current Runs:</label>
+          <input type="text" id="runs" name="runs" required />
+          <label for="wickets">Wickets Fallen:</label>
+          <input type="text" id="wickets" name="wickets" required />
+          <label for="runs5overs">Runs in Last 5 Overs:</label>
+          <input type="text" id="runs5overs" name="runs5overs" required />
+          <label for="wickets5overs">Wickets in Last 5 Overs:</label>
+          <input type="text" id="wickets5overs" name="wickets5overs" required />
+          <button type="submit" class="predict-button">Predict Score</button>
+        </form>
+      </div>
+    </section>
+
+    <div id="predictionModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modalText">Score Prediction:</p>
+      </div>
+    </div>
+
+    <!-- Validation Modal -->
+    <div
+      id="validationModal"
+      style="
+        display: none;
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: white;
+        border: 2px solid #f00;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        text-align: center;
+      "
+    >
+      <h2 style="color: red" id="validationHeading">Validation Error</h2>
+      <p id="validationMessage" style="color: black"></p>
+      <button
+        onclick="closeValidationModal()"
+        style="
+          background-color: #007bff;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        "
+      >
+        OK
+      </button>
+    </div>
+
+    <section class="prediction-form" id="prediction-form-2">
+      <div class="form-container">
+        <h3>IPL Win Probability Predictor</h3>
+        <form
+          id="predictionForm2"
+          method="POST"
+          action="predict_win_probability"
+        >
+          <label for="battingTeam">Select Batting Team:</label>
+          <select id="battingTeam1" name="battingTeam" required>
+            <option value="Chennai Super Kings">Chennai Super Kings</option>
+            <option value="Mumbai Indians">Mumbai Indians</option>
+            <option value="Delhi Capitals">Delhi Capitals</option>
+            <option value="Punjab Kings">Punjab Kings</option>
+            <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+            <option value="Rajasthan Royals">Rajasthan Royals</option>
+            <option value="Royal Challengers Bangalore">
+              Royal Challengers Bangalore
+            </option>
+            <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+          </select>
+          <label for="bowlingTeam">Select Bowling Team:</label>
+          <select id="bowlingTeam1" name="bowlingTeam" required>
+            <option value="Chennai Super Kings">Chennai Super Kings</option>
+            <option value="Mumbai Indians">Mumbai Indians</option>
+            <option value="Delhi Capitals">Delhi Capitals</option>
+            <option value="Punjab Kings">Punjab Kings</option>
+            <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+            <option value="Rajasthan Royals">Rajasthan Royals</option>
+            <option value="Royal Challengers Bangalore">
+              Royal Challengers Bangalore
+            </option>
+            <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+          </select>
+
+          <label for="city">Select City:</label>
+          <select id="city" name="city" required>
+            <option value="Chennai">Chennai</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Chandigarh">Chandigarh</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Jaipur">Jaipur</option>
+            <option value="Bangalore">Bangalore</option>
+            <option value="Hyderabad">Hyderabad</option>
+          </select>
+
+          <div class="form-group predict-group">
+            <div>
+              <label for="runsleft">Runs Left:</label>
+              <input type="text" id="runsleft" name="runsleft" required />
+            </div>
+            <div>
+              <label for="ballsleft">Balls Left:</label>
+              <input type="text" id="ballsleft" name="ballsleft" required />
+            </div>
+            <div>
+              <label for="wicketsleft">Wickets Left:</label>
+              <input type="text" id="wicketsleft" name="wicketsleft" required />
+            </div>
+          </div>
+          <div class="form-group predict-group">
+            <div>
+              <label for="currrr">Current Run Rate:</label>
+              <input type="text" id="currrr" name="currrr" required />
+            </div>
+            <div>
+              <label for="reqrr">Required Run Rate:</label>
+              <input type="text" id="reqrr" name="reqrr" required />
+            </div>
+          </div>
+          <label for="target">Target:</label>
+          <input type="text" id="target" name="target" required />
+          <button type="submit" class="predict-button">
+            Predict Probability
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <div id="chartModal" class="modal">
+      <div class="modal-content">
+        <span class="close-chart">&times;</span>
+        <canvas id="winProbabilityChart" width="200" height="200"></canvas>
+      </div>
+    </div>
+
+    <section class="team-section" id="team-section">
+      <h2 id="teamjatt">Our Team</h2>
+      <div class="team-members">
+        <div class="team-member">
+          <img
+            src="{{ url_for('static', filename='images/Maurya.jpg') }}"
+            alt="Team Member 1"
+          />
+          <h3>Maurya Jain</h3>
+        </div>
+        <div class="team-member">
+          <img
+            src="{{ url_for('static', filename='images/Sachin.jpg') }}"
+            alt="Team Member 2"
+          />
+          <h3>Sachin Goyal</h3>
+        </div>
+        <!-- <div class="team-member">
+          <img
+            src="{{ url_for('static', filename='images/img.jpg') }}"
+            alt="Team Member 3"
+          />
+          <h3>name</h3>
+        </div>
+        <div class="team-member">
+          <img
+            src="{{ url_for('static', filename='images/img.jpg') }}"
+            alt="Team Member 3"
+          />
+          <h3>name</h3>
+        </div> -->
+      </div>
+    </section>
+
+    <section class="feedback-section" id="feedback-section">
+      <h2>Feedback</h2>
+      <form class="feedback-form" action="#" method="POST">
+        <div class="form-group name-group">
+          <div class="name-field">
+            <label for="firstName"
+              >First Name <span class="required">*</span></label
+            >
+            <input type="text" id="firstName" name="firstName" required />
+          </div>
+          <div class="name-field">
+            <label for="lastName"
+              >Last Name <span class="required">*</span></label
+            >
+            <input type="text" id="lastName" name="lastName" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="feedback">Feedback <span class="required">*</span></label>
+          <textarea id="feedback" name="feedback" required></textarea>
+        </div>
+        <button type="submit" class="submit-button">Submit Feedback</button>
+      </form>
+    </section>
+
+    <footer>
+      <p>&copy; 2024 MatchMind. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const navToggle = document.getElementById("nav-toggle");
+      const navLinks = document.getElementById("nav-links");
+      const modal = document.getElementById("predictionModal");
+      const modalText = document.getElementById("modalText");
+      const closeModal = document.getElementsByClassName("close")[0];
+      const chartModal = document.getElementById("chartModal");
+      const closeChartModal = document.getElementsByClassName("close-chart")[0];
+
+      navToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      // Handle score prediction form submission
+      // Validation function
+      // Custom modal functions
+      function showValidationModal(message) {
+        const validationModal = document.getElementById("validationModal");
+        const validationMessage = document.getElementById("validationMessage");
+
+        validationMessage.textContent = message; // Set the message
+        validationModal.style.display = "block"; // Show the modal
+      }
+
+      function closeValidationModal() {
+        const validationModal = document.getElementById("validationModal");
+        validationModal.style.display = "none"; // Hide the modal
+      }
+
+      // Validation Function
+      function validateSelectValues() {
+        const select1 = document.getElementById("battingTeam");
+        const select2 = document.getElementById("bowlingTeam");
+        const runs = document.getElementById("runs");
+        const runsLast5Overs = document.getElementById("runs5overs");
+        const wickets = document.getElementById("wickets");
+        const wicket5over = document.getElementById("wickets5overs");
+
+        // Validate batting and bowling teams
+        if (select1.value === select2.value) {
+          showValidationModal(
+            "Both Batting Team & Bowling Team can't be the same!"
+          );
+          return false; // Validation failed
+        }
+
+        // Validate runs in last 5 overs <= total runs
+        if (Number(runsLast5Overs.value) > Number(runs.value)) {
+          showValidationModal("Runs in Last 5 Overs cannot exceed Total Runs!");
+          return false; // Validation failed
+        }
+
+        if (Number(wickets5overs.value) > Number(wickets.value)) {
+          showValidationModal(
+            "Wickets in Last 5 Overs cannot exceed Total Wickets!"
+          );
+          return false; // Validation failed
+        }
+
+        const oversInput = document.getElementById("over");
+        const overs = oversInput.value;
+
+        // Regex to validate complete overs input (e.g., 0.0 - 5.6)
+        const oversPattern = /^[0-9]+(\.[0-6])?$/;
+
+        // Allow partial input like "5." temporarily
+        const partialPattern = /^[0-9]+(\.)?$/;
+
+        // Check for valid complete input
+        if (
+          !oversPattern.test(overs) &&
+          !partialPattern.test(overs) &&
+          overs !== ""
+        ) {
+          showValidationModal(
+            "Invalid overs format! Enter whole numbers or decimals up to .6 (e.g., 5.3, 0.0, or 4)."
+          );
+          oversInput.value = ""; // Clear the invalid input
+          return false;
+        }
+
+        return true; // Validation passed
+      }
+
+      // Add change event listeners for validation
+      document
+        .getElementById("battingTeam")
+        .addEventListener("change", validateSelectValues);
+      document
+        .getElementById("bowlingTeam")
+        .addEventListener("change", validateSelectValues);
+      document
+        .getElementById("runs")
+        .addEventListener("input", validateSelectValues);
+      document
+        .getElementById("runs5overs")
+        .addEventListener("input", validateSelectValues);
+      document
+        .getElementById("over")
+        .addEventListener("input", validateSelectValues);
+
+      document
+        .getElementById("wickets")
+        .addEventListener("input", validateSelectValues);
+
+      document
+        .getElementById("wickets5overs")
+        .addEventListener("input", validateSelectValues);
+
+      // Submit event listener
+      document
+        .getElementById("predictionForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          // Validate all inputs before submission
+          if (!validateSelectValues()) {
+            return; // Stop form submission if validation fails
+          }
+
+          // Gather form data
+          const formData = new FormData(this);
+
+          try {
+            const response = await fetch("/predict", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json();
+
+            // Display the score prediction in the modal
+            modalText.innerHTML = `<strong>Score Prediction:</strong> ${result.prediction}`;
+            modal.style.display = "block";
+          } catch (error) {
+            console.error("Error:", error);
+            showValidationModal(
+              "Failed to fetch prediction. Please try again."
+            );
+          }
+        });
+
+      // Modal close functionality
+      closeModal.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      // Handle win probability prediction form submission
+      document
+        .getElementById("predictionForm2")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault(); // Prevent form submission initially
+
+          // Gather form data
+          const battingTeam1 = document.getElementById("battingTeam1");
+          const bowlingTeam1 = document.getElementById("bowlingTeam1");
+          const ballsleft = document.getElementById("ballsleft");
+          const wicketsleft = document.getElementById("wicketsleft");
+
+          // Validation function
+          function validateSelectValues() {
+            if (battingTeam1.value === bowlingTeam1.value) {
+              showValidationModal(
+                "Both Batting Team & Bowling Team can't be the same!"
+              );
+              return false; // Validation failed
+            }
+
+            if (ballsleft.value > 120) {
+              showValidationModal("Balls Can't be more than 120");
+              return false; // Validation failed
+            }
+
+            if (wicketsleft.value > 10) {
+              showValidationModal("Wickets Can't be more than 10");
+              return false; // Validation failed
+            }
+
+            return true; // Validation passed
+          }
+
+          // Perform validation before proceeding
+          if (!validateSelectValues()) {
+            return; // Stop form submission if validation fails
+          }
+
+          // If validation passes, gather the form data
+          const formData = new FormData(this);
+
+          try {
+            const response = await fetch("predict_win_probability", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json();
+
+            // Show the chart modal and display win probability as a pie chart
+            chartModal.style.display = "block";
+
+            const ctx = document
+              .getElementById("winProbabilityChart")
+              .getContext("2d");
+
+            if (window.myPieChart) {
+              window.myPieChart.destroy(); // Destroy any existing chart instance
+            }
+
+            window.myPieChart = new Chart(ctx, {
+              type: "pie",
+              data: {
+                labels: [battingTeam1.value, bowlingTeam1.value],
+                datasets: [
+                  {
+                    data: [result.prediction, 1 - result.prediction],
+                    backgroundColor: ["#36A2EB", "#FF6384"],
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: {
+                  legend: {
+                    position: "top",
+                  },
+                  title: {
+                    display: true, // Enable the title
+                    text: "Win Probability Prediction", // Title text
+                    font: {
+                      size: 18, // Font size for the title
+                      weight: "bold", // Font weight
+                    },
+                    padding: {
+                      // Padding around the title
+                      top: 10,
+                      bottom: 20,
+                    },
+                  },
+                },
+              },
+            });
+          } catch (error) {
+            console.error("Error while fetching prediction:", error);
+          }
+        });
+
+      // Close chart modal when clicking on the close button
+      closeChartModal.onclick = function () {
+        chartModal.style.display = "none";
+      };
+
+      // Close chart modal when clicking outside of it
+      window.onclick = function (event) {
+        if (event.target === chartModal) {
+          chartModal.style.display = "none";
+        }
+      };
+
+            // Handle player performance prediction form submission
+      document
+        .getElementById("batsmanForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const formData = new FormData(this);
+
+          try {
+            const response = await fetch("/predict_batsman", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json();
+
+            if (result.error) {
+              console.error("Error from server:", result.error);
+              showValidationModal("Failed to fetch player performance. Please try again.");
+              return;
+            }
+
+            // Fill report card
+            document.getElementById("res-batter").textContent =
+              document.getElementById("batter").value;
+            document.getElementById("res-bowling-team").textContent =
+              document.getElementById("BowlingTeam").value;
+            document.getElementById("res-city").textContent =
+              document.getElementById("City").value;
+            document.getElementById("res-toss").textContent =
+              document.getElementById("TossDecision").value;
+
+            document.getElementById("res-sr").textContent = result.StrikeRate;
+            document.getElementById("res-runs").textContent = result.TotalRuns;
+            document.getElementById("res-4s").textContent = result.Avg4s;
+            document.getElementById("res-6s").textContent = result.Avg6s;
+            document.getElementById("res-impact").textContent = result.ImpactScore;
+
+            document.getElementById("batsmanResult").style.display = "block";
+          } catch (error) {
+            console.error("Error while fetching batsman prediction:", error);
+            showValidationModal("Failed to fetch player performance. Please try again.");
+          }
+        });
+
+    </script>
+  </body>
+</html>
