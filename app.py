@@ -5,15 +5,24 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Load the .pkl model files
-with open('ipl1_model.pkl', 'rb') as file:
-    score_model = pickle.load(file)
+score_model = None
+try:
+    with open('ipl1_model.pkl', 'rb') as file:
+        score_model = pickle.load(file)
+except FileNotFoundError:
+    print("⚠️ Score model not available in this environment.")
 
+# Batsman performance model (local only, not on Render)
+batsman_model = None
+try:
+    with open('batsmanmodel.pkl', 'rb') as file:
+        batsman_model = pickle.load(file)
+except FileNotFoundError:
+    print("⚠️ Batsman model not available in this environment.")
+
+# Win probability model (this one WILL exist on Render)
 with open('winmodel.pkl', 'rb') as file:
     win_prob_model = pickle.load(file)
-
-with open('batsmanmodel.pkl', 'rb') as file:
-    batsman_model = pickle.load(file)
 
 
 # Dictionary to map team names to one-hot encoding

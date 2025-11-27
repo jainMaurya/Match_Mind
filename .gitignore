@@ -1,15 +1,14 @@
-# Ignore big / generated files
-static/videos/
-*.mp4
+# Ignore all pickle models by default
 *.pkl
 
-# Python cache
+# BUT allow win probability model to be tracked
+!winmodel.pkl
+
+# Other stuff:
 __pycache__/
 *.pyc
-
-# Jupyter checkpoints
 .ipynb_checkpoints/
-
-# OS / editor junk
+static/videos/
+*.mp4
 .DS_Store
 Thumbs.db
