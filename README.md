@@ -30,23 +30,30 @@ HTML, CSS, JavaScript
 
 Chart.js for visualizations
 
-📥 Installation & Setup
-1. Clone the repository:
+Installation & Setup
 
+1. **Clone the repository:**
+```bash
 git clone https://github.com/jainMaurya/Match_Mind.git
+```
 
-2. Navigate to the project directory:
-
+2. **Navigate to the project directory:**
+```bash
 cd Match_Mind
+```
 
-3. Install dependencies:
-
+3. **Install dependencies:**
+```bash
 pip install -r requirements.txt
+```
 
-4. Run the Flask server:
-
+4. **Run the Flask server:**
+```bash
 python app.py
+```
 
-5. Open your browser and visit:
-
+5. **Open your browser and go to:**
+```bash
 http://127.0.0.1:5000/
+```
+
