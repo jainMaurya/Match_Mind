@@ -4,91 +4,104 @@ import numpy as np
 import pandas as pd
 import os
 
-
 app = Flask(__name__)
 
-score_model = load_model("ipl1_model.pkl")
-batsman_model = load_model("batsmanmodel.pkl")
-win_model = load_model("winmodel.pkl")
-try:
-    with open('ipl1_model.pkl', 'rb') as file:
-        score_model = pickle.load(file)
-except FileNotFoundError:
-    print("⚠️ Score model not available in this environment.")
+# ------------------ Helper to load models safely ------------------ #
 
-# Batsman performance model (local only, not on Render)
-batsman_model = None
-try:
-    with open('batsmanmodel.pkl', 'rb') as file:
-        batsman_model = pickle.load(file)
-except FileNotFoundError:
-    print("⚠️ Batsman model not available in this environment.")
-
-# Win probability model (this one WILL exist on Render)
-with open('winmodel.pkl', 'rb') as file:
-    win_prob_model = pickle.load(file)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-# Dictionary to map team names to one-hot encoding
-team_mapping = {
-    'Chennai Super Kings': [1, 0, 0, 0, 0, 0, 0, 0],
-    'Delhi Daredevils': [0, 1, 0, 0, 0, 0, 0, 0],
-    'Kings XI Punjab': [0, 0, 1, 0, 0, 0, 0, 0],
-    'Kolkata Knight Riders': [0, 0, 0, 1, 0, 0, 0, 0],
-    'Mumbai Indians': [0, 0, 0, 0, 1, 0, 0, 0],
-    'Rajasthan Royals': [0, 0, 0, 0, 0, 1, 0, 0],
-    'Royal Challengers Bangalore': [0, 0, 0, 0, 0, 0, 1, 0],
-    'Sunrisers Hyderabad': [0, 0, 0, 0, 0, 0, 0, 1]
-}
+def load_model(filename):
+    """Load a pickle model if it exists, else return None."""
+    path = os.path.join(BASE_DIR, filename)
+    if os.path.exists(path):
+        try:
+            with open(path, "rb") as f:
+                return pickle.load(f)
+        except Exception as e:
+            print(f"⚠️ Error loading {filename}: {e}")
+            return None
+    else:
+        print(f"⚠️ {filename} not found in this environment.")
+        return None
 
-# Route to render the main HTML page
-@app.route('/')
+
+# ------------------ Load models (local vs Render) ------------------ #
+
+score_model = load_model("ipl1_model.pkl")        # big → only local
+batsman_model = load_model("batsmanmodel.pkl")    # big → only local
+win_model = load_model("winmodel.pkl")            # smaller → also on Render
+
+
+# ------------------ Routes ------------------ #
+
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("index.html")
 
-# Prediction endpoint for form 1 (Player Performance)
-@app.route('/predict', methods=['POST'])
+
+# 1️⃣ IPL Score Predictor
+@app.route("/predict", methods=["POST"])
 def predict():
-    data = request.form
+    # On Render, score_model will be None because ipl1_model.pkl isn't deployed
+    if score_model is None:
+        return jsonify({
+            "error": "Score prediction model is not available in the deployed version."
+        }), 200
 
-    batting_team  = data.get("battingTeam")
-    bowling_team  = data.get("bowlingTeam")
-    over          = float(data.get("over", 0))
-    runs          = int(data.get("runs", 0))
-    wickets       = int(data.get("wickets", 0))
-    runs5overs    = int(data.get("runs5overs", 0))
-    wickets5overs = int(data.get("wickets5overs", 0))
-    city          = "Mumbai"   # or take from user later
+    try:
+        data = request.form
 
-    row = [[
-        batting_team,
-        bowling_team,
-        city,
-        runs,
-        wickets,
-        over,
-        runs5overs,
-        wickets5overs
-    ]]
+        batting_team = data.get("battingTeam")
+        bowling_team = data.get("bowlingTeam")
+        over = float(data.get("over", 0))
+        runs = int(data.get("runs", 0))
+        wickets = int(data.get("wickets", 0))
+        runs5overs = int(data.get("runs5overs", 0))
+        wickets5overs = int(data.get("wickets5overs", 0))
+        city = "Mumbai"  # or take from user later
 
-    columns = [
-        "BattingTeam",
-        "BowlingTeam",
-        "City",
-        "runs",
-        "wickets",
-        "overs",
-        "runs_last_5",
-        "wickets_last_5",
-    ]
+        row = [[
+            batting_team,
+            bowling_team,
+            city,
+            runs,
+            wickets,
+            over,
+            runs5overs,
+            wickets5overs
+        ]]
 
-    df = pd.DataFrame(row, columns=columns)
+        columns = [
+            "BattingTeam",
+            "BowlingTeam",
+            "City",
+            "runs",
+            "wickets",
+            "overs",
+            "runs_last_5",
+            "wickets_last_5",
+        ]
 
-    prediction = score_model.predict(df)[0]
-    return jsonify({"prediction": int(round(prediction))})
+        df = pd.DataFrame(row, columns=columns)
 
-@app.route('/predict_batsman', methods=['POST'])
+        prediction = score_model.predict(df)[0]
+        return jsonify({"prediction": int(round(float(prediction)))})
+
+    except Exception as e:
+        print("Error in /predict route:", e)
+        return jsonify({"error": "Unable to compute score prediction."}), 200
+
+
+# 2️⃣ Player Performance Predictor
+@app.route("/predict_batsman", methods=["POST"])
 def predict_batsman():
+    # On Render, batsman_model will be None
+    if batsman_model is None:
+        return jsonify({
+            "error": "Player performance model is not available in the deployed version."
+        }), 200
+
     try:
         data = request.form
 
@@ -97,8 +110,7 @@ def predict_batsman():
         city = data.get("City")
         toss_decision = data.get("TossDecision")
 
-        # Columns must match training exactly
-        cols = ['batter', 'BowlingTeam', 'City', 'TossDecision']
+        cols = ["batter", "BowlingTeam", "City", "TossDecision"]
         row = [[batter, bowling_team, city, toss_decision]]
         df = pd.DataFrame(row, columns=cols)
 
@@ -112,39 +124,54 @@ def predict_batsman():
             "ImpactScore": round(float(preds[4]), 1),
         }
 
-
         return jsonify(result)
 
     except Exception as e:
         print("Error in /predict_batsman route:", e)
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "Unable to compute player performance."}), 200
 
 
-# Prediction endpoint for form 2 (Win Probability)
-@app.route('/predict_win_probability', methods=['POST'])
+# 3️⃣ Win Probability Predictor
+@app.route("/predict_win_probability", methods=["POST"])
 def predict_win_probability():
-    data = request.form
-    batting_team = data.get("battingTeam")
-    bowling_team = data.get("bowlingTeam")
-    city = data.get("city")
-    runs_left = int(data.get("runsleft", 0))
-    balls_left = int(data.get("ballsleft", 0))
-    wickets_left = int(data.get("wicketsleft", 0))
-    currrr = float(data.get("currrr", 0))
-    reqrr = float(data.get("reqrr", 0))
-    target = int(data.get("target", 0))
+    if win_model is None:
+        return jsonify({
+            "error": "Win probability model is not available."
+        }), 200
 
-    l = [[batting_team,bowling_team, city, runs_left, balls_left,wickets_left ,currrr, reqrr, target]]
-    columns = ['BattingTeam', 'BowlingTeam', 'City', 'runs_left', 'balls_left',
-       'wickets_left', 'current_run_rate', 'required_run_rate', 'target']
+    try:
+        data = request.form
+        batting_team = data.get("battingTeam")
+        bowling_team = data.get("bowlingTeam")
+        city = data.get("city")
+        runs_left = int(data.get("runsleft", 0))
+        balls_left = int(data.get("ballsleft", 0))
+        wickets_left = int(data.get("wicketsleft", 0))
+        currrr = float(data.get("currrr", 0))
+        reqrr = float(data.get("reqrr", 0))
+        target = int(data.get("target", 0))
 
-    team2023 = pd.DataFrame(l, columns=columns)
+        l = [[batting_team, bowling_team, city,
+              runs_left, balls_left, wickets_left,
+              currrr, reqrr, target]]
 
-    prob = win_prob_model.predict_proba(team2023)[0][1]  # Example if you want the second class probability
-    return jsonify({"prediction": float(prob)})  # Return a float for readability
+        columns = [
+            "BattingTeam", "BowlingTeam", "City", "runs_left", "balls_left",
+            "wickets_left", "current_run_rate", "required_run_rate", "target"
+        ]
 
+        team2023 = pd.DataFrame(l, columns=columns)
+
+        prob = win_model.predict_proba(team2023)[0][1]
+        return jsonify({"prediction": float(prob)})
+
+    except Exception as e:
+        print("Error in /predict_win_probability route:", e)
+        return jsonify({"error": "Unable to compute win probability."}), 200
+
+
+# ------------------ Entry point ------------------ #
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Render sets PORT
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
-
