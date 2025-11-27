@@ -1,5 +1,9 @@
 # Ignore all pickle models by default
 *.pkl
+ipl1_model.pkl
+batsmanmodel.pkl
+winmodel.pkl
+
 
 # BUT allow win probability model to be tracked
 !winmodel.pkl

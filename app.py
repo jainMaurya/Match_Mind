@@ -7,7 +7,9 @@ import os
 
 app = Flask(__name__)
 
-score_model = None
+score_model = load_model("ipl1_model.pkl")
+batsman_model = load_model("batsmanmodel.pkl")
+win_model = load_model("winmodel.pkl")
 try:
     with open('ipl1_model.pkl', 'rb') as file:
         score_model = pickle.load(file)
